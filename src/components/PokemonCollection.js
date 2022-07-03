@@ -8,7 +8,7 @@ function PokemonCollection({ allPokemon }) {
     return <PokemonCard 
               key={pokemon.id}
               pokemon={pokemon}
-          />
+            />
   })
 
   return (

@@ -7,15 +7,25 @@ import { Container } from "semantic-ui-react";
 function PokemonPage() {
 
 const [allPokemon, setAllPokemon] = useState([])
+const [filteredPokemon, setFilteredPokemon] = useState(allPokemon)
+
+function handleSearch(e){
+  const filteredPoke = allPokemon.filter(pokemon => {
+    return pokemon.name.toLowerCase().includes(e.target.value)
+  })
+  setFilteredPokemon(filteredPoke)
+}
+
+//Wont load pokemon initially without this, everytime allpokemon changes, we update filteredpokemon 
+useEffect(() => { 
+  setFilteredPokemon(allPokemon)
+}, [allPokemon])
 
 useEffect(() => {
   fetch(`http://localhost:3001/pokemon`)
   .then(r => r.json())
   .then(data => setAllPokemon(data))
-
 }, [])
-
-console.log(allPokemon)
 
   return (
     <Container>
@@ -23,9 +33,9 @@ console.log(allPokemon)
       <br />
       <PokemonForm />
       <br />
-      <Search />
+      <Search handleSearch={handleSearch}/>
       <br />
-      <PokemonCollection allPokemon={allPokemon}/>
+      <PokemonCollection allPokemon={filteredPokemon}/>
     </Container>
   );
 }
