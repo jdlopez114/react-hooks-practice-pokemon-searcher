@@ -16,6 +16,21 @@ function handleSearch(e){
   setFilteredPokemon(filteredPoke)
 }
 
+function addNewPokemon(newPokemon){
+ 
+  fetch(`http://localhost:3001/pokemon`, {
+      method: "POST",
+      headers: {
+        "Content-Type" : "application/json"
+      },
+        body: JSON.stringify(newPokemon)
+    })
+        .then(r => r.json())
+        .then(data => console.log(data))
+        
+    setAllPokemon([...allPokemon, newPokemon])
+}
+
 //Wont load pokemon initially without this, everytime allpokemon changes, we update filteredpokemon 
 useEffect(() => { 
   setFilteredPokemon(allPokemon)
@@ -31,7 +46,7 @@ useEffect(() => {
     <Container>
       <h1>Pokemon Searcher</h1>
       <br />
-      <PokemonForm />
+      <PokemonForm addNewPokemon={addNewPokemon}/>
       <br />
       <Search handleSearch={handleSearch}/>
       <br />
